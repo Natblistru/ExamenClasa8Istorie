@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>BAC-teste</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="./slick/slick.css">
+	<link rel="stylesheet" type="text/css" href="./slick/slick-theme.css">
+  <script type="text/javascript" src="standalone/umd/vis-timeline-graph2d.min.js"></script>
+  <link href="standalone/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />	
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Titillium+Web:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet"> 
+	<style>
+		body  {
+		  background-image: url("img/ww1_2.jpg") ;
+		  background-repeat: no-repeat;
+		  background-attachment: fixed;
+			background-size: cover;
+			height: 100%;
+			z-index: -1; 
+			font-family: 'Titillium Web', sans-serif;;
+		}
+	
+	.center {
+			background-color: rgba(140, 56, 41, 0.85);
+			padding: 10px 0 5px;
+		}
+    .slider {
+        margin: 0 25px;
+    }
+	h1 {
+		text-align: center;
+		margin: 0;
+		font-family: 'Roboto', sans-serif;
+	}
+	figcaption {
+		font-size: 14px;
+		line-height: 16px;
+		text-align: center;
+		<!-- font-family: 'Roboto', sans-serif;	 -->
+		font-size:
+	}
+	.slider img {
+		border: 5px solid transparent;
+	}
+	.slider img:hover {
+		border: 5px solid rgba(140, 56, 41, 1);	
+	}
+	
+	.slider img.activeTEM {
+		border: 1px solid rgb(140, 56, 41);
+		box-shadow: 20px 20px 20px 0px rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+	}
+	
+	.content-container figure img{
+		border: 5px solid rgba(140, 56, 41, 1);
+		display: block;
+		margin: auto;
+	}
+	
+	.inline-block {
+	  display: inline-block;
+	}
+	article,
+	div,
+	nav {
+		box-sizing:border-box;
+	}
+	.content-container {
+		 margin:0 auto;
+		 max-width:1280px;
+		 width:100%
+	}
+	.epoch-content {
+		 background:transparent!important;
+		 padding:15px;
+		 position:relative
+	}
+	
+	.epoch-content .epoch-detail-menu {
+	  display: inline-block;
+	  padding: 80px 15px 0 25px;
+	  width: 250px;
+	  float: left;
+	}
+	.epoch-content .epoch-detail-menu .detail-link-wrapper {
+		background: rgba(17,36,67,.7);
+		border: 2px solid rgb(170, 122, 39);
+		border-radius: 25px;
+		font-size: 25px;
+		margin: 5px 0;
+		text-align: center;
+	}
+
+	.epoch-content .epoch-detail-menu .detail-link-wrapper:hover {
+		background: rgba(17,36,67,.85);
+	}
+	.epoch-content .epoch-detail-menu .detail-link-wrapper.active {
+		background: rgb(229, 224, 222, 0.6);
+		font-weight: 600;
+	}	
+	.detail-link-wrapper a {
+	  text-decoration: none;
+	  color: #d2ea96; 
+	  display: block;
+	}
+	.epoch-content .epoch-detail-menu .detail-link-wrapper.active > a {
+	  color: #161f17 !important;
+	}
+	.epoch-detail-header {
+		background: #9d6256;
+	}
+
+	.epoch-content .epoch-detail-content-wrapper {
+		 border:2px solid;
+		 border-radius:15px;
+		 margin-left:15px;
+		 overflow:hidden;
+		 position:relative;
+		 vertical-align:top;
+		 width:calc(100% - 265px);
+		 z-index:1;
+		 display: none;
+		 background-color: hsla(51,85%,95%,.9);
+	}
+
+	.epoch-detail-content-wrapper .title-wrapper {
+		color: #fff;
+		font-size: 20px;
+		font-weight: 600;
+		line-height: 28px;
+		padding: 20px 0;
+		width: 100%;
+	}
+	.title-wrapper .title{
+		text-align: center;
+		margin: 0;
+		font-family: 'Titillium Web', sans-serif;
+	}
+	.epoch-detail-content-wrapper .epoch-detail-content {
+		padding: 20px;
+		font-size: 18px;
+	}
+	.accordion {
+	  background-color: #eee;
+	  color: #444;
+	  cursor: pointer;
+	  padding: 18px;
+	  width: 100%;
+	  border: none;
+	  text-align: left;
+	  outline: none;
+	  font-size: 18px;
+	  transition: 0.4s;
+	}
+
+	.activeACC, .accordion:hover {
+	  background-color: #ccc;
+	}
+
+	.accordion:after {
+	  content: '\002B';
+	  color: #777;
+	  font-weight: bold;
+	  float: right;
+	  margin-left: 5px;
+	}
+
+	.activeACC:after {
+	  content: "\2212";
+	}
+
+	.panel {
+	  padding: 0 18px;
+	  background-color: white;
+	  max-height: 0;
+	  overflow: hidden;
+	  transition: max-height 0.2s ease-out;
+	}
+    #visualization {
+      width: 890px;
+      height: 296px;
+      border: 1px solid lightgray;
+    }
+	.blue {
+	  color: white;
+	  background-color: blue;
+	  border-color: darkred;
+	}
+	.relative {
+		 position:relative
+	}
+	
+	.absolute {
+	  position: absolute;
+	}
+	.overview-entry {
+		box-sizing: border-box;
+		margin: 10px 10px 10px 10px;
+		vertical-align: top;
+		width: calc(50% - 22px);
+	}
+	
+	.overview-entry .overview-image {
+	  background-position: 50%;
+	  background-repeat: no-repeat;
+	  background-size: cover;
+	  border: 2px solid rgba(157, 98, 86, 0.78);
+	  border-radius: 10px;
+	  height: 220px;
+	  overflow: hidden;
+	  position: relative;
+	}
+	
+	.overview-entry .overview-title {
+		bottom: 0;
+		color: #fff;
+		font-family: 'Titillium Web', sans-serif;
+		font-weight: 600;
+		font-size: 24px;
+		padding: 10px 15px;
+		width: 100%;
+		background-color: rgba(230, 129, 108, 0.78);
+	}
+	.overview-entry .overview-description {
+		font-family: 'Titillium Web',sans-serif;
+
+		padding: 5px;
+	}
+	#question-mark {
+	  border-radius: 50px;
+	  box-sizing: border-box;
+	  color: #fff;
+	  font-family: Cormorant SC,serif;
+	  font-size: 70px;
+	  font-weight: 700;
+	  height: 95px;
+	  line-height: 95px;
+	  position: absolute;
+	  text-align: center;
+	  left: -15px;
+	  top: -10px;
+	  width: 95px;
+	  background: #9d6256;
+	}
+	
+	#question-text-wrapper {
+	  margin-bottom: 25px;
+	  margin-left: 10px;
+	  padding: 0 20px 0 100px;
+	  position: relative;
+	}
+	#question-text-wrapper #question-text {
+	  color: #1d3d71;
+	  display: table-cell;
+	  font-size: 28px;
+	  font-weight: 700;
+	  height: 75px;
+	  line-height: 28px;
+	  vertical-align: middle;
+	}
+	#question-wrapper #question-image-wrapper {
+	  background-size: 100% auto;
+	  float: left;
+	  height: 300px;
+	  width: 22%;
+	}
+	#question-wrapper #question-image-wrapper #question-image {
+	  border-radius: 5px;
+	  display: block;
+	  width: 100%;
+	}
+	#question-right-wrapper {
+	  margin-left: 32%;
+	  position: relative;
+	}
+	#answers-wrapper {
+	  list-style: none inside;
+	  margin: 0;
+	  padding: 0;
+	}
+	.answer-wrapper {
+	  border-radius: 100px;
+	  cursor: pointer;
+	  height: 70px;
+	  margin-bottom: 18px;
+	  position: relative;
+	  -webkit-transition: background-color .4s;
+	  transition: background-color .4s;
+	  background: rgba(29,61,113,.9);
+	  border: 3px solid #829c43;
+	}
+	.answer-letter {
+	  border-radius: 60px;
+	  box-sizing: border-box;
+	  color: #1d3d71;
+	  font-family: Cormorant SC,serif;
+	  font-size: 40px;
+	  height: 60px;
+	  left: 5px;
+	  line-height: 60px;
+	  overflow: hidden;
+	  position: absolute;
+	  text-align: center;
+	  top: 5px;
+	  -webkit-transition: background-color .4s,color .4s;
+	  transition: background-color .4s,color .4s;
+	  width: 60px;
+	  background: #d2ea96;
+	}
+	.answer-text {
+	  color: #fff;
+	  display: table-cell;
+	  font-size: 18px;
+	  font-weight: 600;
+	  height: 70px;
+	  line-height: 20px;
+	  padding: 0 20px 0 75px;
+	  -webkit-transition: color .4s;
+	  transition: color .4s;
+	  vertical-align: middle;
+	}
+	.answer-wrapper:hover {
+		background-color:#1d3d71!important
+	}
+
+	.answer-wrapper {
+	  animation-duration: 1s;
+	  animation-name: slidein;
+	}
+
+	@keyframes slidein {
+	  from {
+		margin-left: 100%;
+		width: 300%;
+	  }
+
+	  to {
+		margin-left: 0%;
+		width: 100%;
+	  }
+	}
+	</style>
+</head>
+<body>
+
+<h1>Subiecte la ISTORIE</h1>
+
+  <section class="center slider">
+    <div>
+	 <figure>
+	  <img src="img/_1RomRazb.jpg?text=1" width="110" height="130" onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_1_">
+	  <figcaption>1. România în Primul Război Mondial</figcaption>
+	</figure> 	  
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_2MiscRom.jpg?text=2" width="110" height="130" onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_2_">
+	  <figcaption>2. Mișcarea națională a românilor</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_3RomMare.jpg?text=1" width="110" height="130" onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_3_">
+	  <figcaption>3. Marea Unire din 1918</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_1Conf.jpg?text=1" width="110" height="130" onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_4_">
+	  <figcaption>4. Conferinta de Pace din Paris</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_4SUAInterbelica.jpg?text=1" width="110" height="130" onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_5_">
+	  <figcaption>5. SUA in perioada interbelica</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_5EurInterbelica.jpg?text=1" width="110" height="130" onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_6_">
+	  <figcaption>6. Europa de Vest in perioada interbelica</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_7RomInterbelica.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_7_">
+	  <figcaption>7. Romania in perioada interbelica</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_8BasarabInterbelica.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_8_">
+	  <figcaption>8. Basarabia în cadrul Romaniei Mari</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_9RASSM.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_9_">
+	  <figcaption>9. RASSM (1924-1940)</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_10Cultura interbelica.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_10_">
+	  <figcaption>10. Cultura și știința în per. interbelică</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_11CulRomInterbelica.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_11_">
+	  <figcaption>11. Cultura românească în 1918-40</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_12AlianteInterbelice.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_12_">
+	  <figcaption>12. Alianțe și tratate în per. interbelică</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_13RomSovieticInterbelice.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_13_">
+	  <figcaption>13. Relatiie sovieto-romane (1918-1940)</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_14PierderiTerioriale.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_14_">
+	  <figcaption>14. Pierderile teritoriale ale României în 1940</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_15RSSM.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_15_">
+	  <figcaption>15. Formarea RSSM</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_16IIRazboiMond.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_16_">
+	  <figcaption>16. Al Doilea Război Mondial (1939-1945)</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_17IIRazboiMondRom.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_17_">
+	  <figcaption>17. Spatiul romanesc între 1941 şi 1944</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_18Holocaust.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_18_">
+	  <figcaption>18. Crime de război. Holocaust</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_19ConsecinteleIIRazb.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_19_">
+	  <figcaption>19. Consecințele celui de-al II Război Mondial</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_20ONUCreare.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_20_">
+	  <figcaption>20. Relațiile internaționale (1945–1991)</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_21URSSPostbelic.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_21_">
+	  <figcaption>21. URSS în perioada postbelică</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_22RSSMSovietic.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_22_">
+	  <figcaption>22.RSSM - economie şi soc (1944-1985)</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_23RSSMFoamete.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_23_">
+	  <figcaption>23. Foametea și deportările din RSSM</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_24RSSMFrontPopular.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_24_">
+	  <figcaption>24. RSSM între 1985 –1991</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_25RazboiNistru.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_25_">
+	  <figcaption>25. Războiul de pe Nistru</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_26RSSMCultura.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_26_">
+	  <figcaption>26. Cultura și știința în RSSM (1944–1991)</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_27MoldovaCultura.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_27_">
+	  <figcaption>27. Cultura în Republica Moldova</figcaption>
+	</figure> 
+    </div>
+    <div>
+	 <figure>
+	  <img src="img/_28CulturaStiintaPost.jpg?text=1" width="110" height="130"  onclick="MyFunctionActivareTema(this);return false;" data-nr-tema="_28_">
+	  <figcaption>28. Cultura și știința în Epoca Contemporană</figcaption>
+	</figure> 
+    </div>	
+  </section>
+  
+  <div>
+	  <div class="content-container epoch-content">
+		  <nav class="epoch-detail-menu">
+			  <div class="detail-link-wrapper">
+				<a href="#" onclick="MyFunction(event, 'rezumat');return false;" title="Rezumat" data-materia-type="rezumat">Rezumat</a>
+			  </div>
+			  <div class="detail-link-wrapper">
+				<a href="#" onclick="MyFunction(event, 'dictionar');return false;" title="Dictionar" data-materia-type="dictionar">Dictionar</a>
+			  </div>
+			  <div class="detail-link-wrapper">
+				<a href="#" onclick="MyFunction(event, 'video');return false;" title="Video" data-materia-type="video">Video</a>
+			  </div>			  
+			  <div class="detail-link-wrapper">
+				<a href="#" onclick="MyFunction(event, 'cronologie');return false;" title="Cronologie" data-materia-type="cronologie">Cronologie</a>
+			  </div>
+			  <div class="detail-link-wrapper">
+				<a href="#" onclick="MyFunction(event, 'continut');return false;" title="Continut" data-materia-type="continut">Continut</a>
+			  </div>
+			  <div class="detail-link-wrapper">
+				<a href="#" onclick="MyFunction(event, 'eseu');return false;" title="Eseu" data-materia-type="eseu">Eseu</a>
+			  </div>
+			  <div class="detail-link-wrapper">
+				<a href="#" onclick="MyFunction(event, 'teste');return false;" title="Teste" data-materia-type="teste">Teste</a>
+			  </div>			  
+		  </nav>
+		  <article>
+		  
+<!-- /////////////////___________1__________________________________   -->
+		  
+		  
+			<div id="_1_rezumat" class="inline-block epoch-detail-content-wrapper">
+				<div class="epoch-detail-header">
+					<div class="inline-block title-wrapper">
+						<h1 class="title">
+							 Conferința de pace de la Paris și noua ordine internațională
+						</h1>
+					</div>
+				</div>
+				<div class="epoch-detail-content">
+				  <h3>Rezumat (2 propoziții)</h3>
+				  <p>Statele învingătoare în Primul Război Mondial au hotărât la Confrința de la Paris (1919-1920) să stabilească hotarele în Europa,
+	impunând o nouă ordine internațională prin semnarea unor tratate de pace cu țările învinse. La Conferință a participat o delegație din partea României,
+	condusă de Ionel I. C. Brătianu, și reprezentanții guberniei Basarabia, condusă de Ion Pelivamân.</p>
+	<figure>
+	  <img src="img/participanti.jpg" width="720" height="493">
+	  <figcaption>Participanții la Primul Război Mondial: statele învinse (Germania, Austro-Ungaria, Turcia, Bulgaria), statele învingătoare (SUA, Marea Britanie, Franța, Italia și alte state aliate)</figcaption>
+	</figure> 
+				
+				
+				<h3>Rezumat (10 propoziții)</h3>
+				În urma Primului Război Mondial:
+				<ul>
+					<li>	s-au destrămat imperiile German și Austro-Ungar;</li>
+					<li>	În Rusia vin la putere bolșevicii;</li>
+					<li>	SUA preia puterea economico-financiară în lume.</li>
+				</ul>
+	Noul raport de forțe în lume a fost fixat în tratatele internaționale. Cele mai importante – semnate în cadrul Conferinței de Pace de la Paris (19.01.1919 – 21.01.2020). Ea a fost dominată de “consiliul celor patru” format din principalii reprezentanți a statelor învingătoare:
+	<ul>
+		<li>	Thomas Winson, președintele SUA;</li>
+		<li>	David Lloyd-George, prim-ministru Marii Britanii;</li>
+		<li>	Georges Clemenceau, premierul Franței;</li>
+		<li>	Vittorio Orlando, președintele guvernului italian.</li>
+	</ul>
+	Hotărârile conferinței au fost inspirate de “cele 14 puncte” elaborate de președintele Thomas Winson, care exprimau principii noi de organizare a lumii:
+	<ul>
+		<li>	Principiul autodeterminării popoarelor;</li>
+		<li>	Crearea unei organizații internaționale care să supravegheze respectarea cu strictețe a tratatelor de pace.</li>
+	</ul>
+	Însă până la urmă, în mare măsură, s-au luat în vedere numai părerile marilor puteri învingătoare.
+	Pe parcursul anilor 1919-1920 au fost semnate un sistem de tratate între aliați cu fiecare stat învins în parte, care au alcătuit sistemul de la Versailles ce a stabilit o nouă orânduire internașională:
+	<ul>
+		<li>	Tratatul de la Versailles, 28 iunie 1919, cu Germania, care prevedea următoarele :
+			<ul>
+			<li>	Germania este declarată vinovată pentru declanșarea războiului și se obliga:
+			<ul>
+			<li>	să plătească uriașe despăgubiri de război (132 miliarde mărci aur), </li>
+			<li>	să renunțe la colonii (din Africa, China și Oceanul Pacific) </li>
+			<li>	să se dezarmeze. </li>
+			</ul>
+			</li>
+			<li>	Germania pierdea definitiv în folosul Franței Alsacia și Lorena. Regiunea carboniferă Saar trecea sub influiența Societății Națiunilor, pe un termen de 15 ani după care soarta regiunii trebuia să fie determinată de un plebiscit. Germania pierdea o parte a Prusiei occidentale și Poznan în favoarea Poloniei.
+			</li>
+			</ul>
+		</li>
+		<li>	Tratatul de la Neuilly, 27 noiembrie 1919, cu Bulgaria; Bulgaria ceda teritorii în favoarea Greciei și Regatului sârbo-croato-slovon</li>
+		<li>	Tratatul de la Saint-Germain, 10 septembrie 1919, cu Austria; Austria recunoștea granițele tuturor statelor vecine (Cehoslovacia, Polonia, Iugoslavia). Demobilizarea armatei.</li>
+		<li>	Tratatul de la Trianon, 4 iunie 1920, cu Ungaria; prin care se recunoștea unirea Transilvaniei, Banatului și Basarabiei cu România</li>
+		<li>	Tratatul de la Sevres, 10 august 1920, cu Turcia. care pierdea teritoriile din Orientul Apropiat, împărțite între Franța, Anglia, rămânând în Europa doar cu Istanbulul.</li>
+	</ul>
+	Aceste tratate, în linii generale, prevedeau următoarele:
+	<ul>
+	<li>	Au fost create noi state independente: Estonia, Letonia, Lituania, Finlanda, Cehoslovacia, Iugoslavia, etc.</li>
+	<li>	A fost înființată Societatea Națiunilor, organism internațional, care avea ca scop supravegherea și respectarea tratatelor de pace.</li>
+	</ul>
+	</div>
+			</div>
+
+
+			<div id="_1_dictionar" class="inline-block epoch-detail-content-wrapper">
+				<div class="epoch-detail-header">
+					<div class="inline-block title-wrapper">
+						<h1 class="title">
+							 Conferința de pace de la Paris și noua ordine internațională
+						</h1>
+					</div>
+				</div>
+				<div class="epoch-detail-content">			  
+				  
+				  
+				  <h3>Dictionar</h3>
+				  <button class="accordion">Securitate colectiva</button>
+					<div class="panel">
+					  <p>= concept al relațiilor internaționale care proclamă egalitatea și dreptul la securitate al tuturor statelor, indiferent de potențialul economic, demografic sau teritorial.</p>
+					</div>
+				  <button class="accordion">Tratat</button>
+					<div class="panel">
+					  <p>= înțelegere încheiată între două sau mai multe state, prin care se stabilesc drepturile și obligațiile fiecărei părți; convenție; acord.</p>
+					</div>
+				  <button class="accordion">Sistemul de la Versailles</button>				
+					<div class="panel">
+					  <p>= sistem de relații internaționale creat de marile puteri victorioase după Primul Război Mondial prin tratatele de pace cu Germania și foștii sîi aliați semnate la Paris în anii 1919-1920.</p>
+					</div>
+				</div> 
+
+			
+			</div>
+
+
+
+
+			<div id="_1_video" class="inline-block epoch-detail-content-wrapper">
+				<div class="epoch-detail-header">
+					<div class="inline-block title-wrapper">
+						<h1 class="title">
+							 Conferința de pace de la Paris și noua ordine internațională
+						</h1>
+					</div>
+				</div>
+				<div class="epoch-detail-content">				
+				
+				<video width="900" height="375" controls>
+				  <source src="video/Conferinta.mp4" type="video/mp4">
+				  Your browser does not support the video tag.
+				</video> 
+				</div>		  
+			</div>			
+			
+			
+			
+			
+			<div id="_1_cronologie" class="inline-block epoch-detail-content-wrapper">
+				<div class="epoch-detail-header">
+					<div class="inline-block title-wrapper">
+						<h1 class="title">
+							 Conferința de Pace de la Paris și noua ordine internațională
+						</h1>
+					</div>
+				</div>
+				<div class="epoch-detail-content">				
+				
+				  <h3>Cronologie</h3>
+				  <div id="visualization"></div>
+				</div>	
+			</div>				
+			
+			
+			
+			
+			<div id="_1_continut" class="inline-block epoch-detail-content-wrapper">
+				<div class="epoch-detail-header relative">
+					<div class="inline-block title-wrapper">
+						<h1 class="title">
+							 Conferința de Pace de la Paris și noua ordine internațională
+						</h1>
+					</div>
+				</div>
+				
+				<div class="epoch-detail-content">				
+					<div class="overview-entry inline-block ">
+						<a title="Conferința de Pace de la Paris" href="#" onclick="MyFunctionLink(event, 'detail_1');return false;">
+							<div class="overview-image relative" style="background-image: url(img/ConsecinteRazboi.jpg);">
+								<div class="overview-title absolute">Contextul istoric
+								</div>
+							</div>
+						</a>
+						<div class="overview-description">Motivele desfășurării Conferinţei de la Paris. 
+						</div>
+					</div>
+			
+					<div class="overview-entry inline-block ">
+						<a title="Conferința de Pace de la Paris" href="/mittelalter/fruehmittelalter/lucys-wissensbox/die-voelkerwanderung/">
+							<div class="overview-image relative" style="background-image: url(img/Paris-peace-conference-1919.jpg);">
+								<div class="overview-title absolute">Desfășurarea Conferinței
+								</div>
+							</div>
+						</a>
+						<div class="overview-description">Participanții și obiectivele Conferinţei de la Paris. 
+						</div>
+					</div>
+				
+					<div class="overview-entry inline-block ">
+						<a title="Conferința de Pace de la Paris" href="/mittelalter/fruehmittelalter/lucys-wissensbox/die-voelkerwanderung/">
+							<div class="overview-image relative" style="background-image: url(img/tratate.jpg);">
+								<div class="overview-title absolute">Germania şi Tratatul de la Versailles
+								</div>
+							</div>
+						</a>
+						<div class="overview-description">Pedepsirea Germaniei 
+						</div>
+					</div>
+				
+					<div class="overview-entry inline-block ">
+						<a title="Conferința de Pace de la Paris" href="/mittelalter/fruehmittelalter/lucys-wissensbox/die-voelkerwanderung/">
+							<div class="overview-image relative" style="background-image: url(img/basarabia.jpg);">
+								<div class="overview-title absolute">Tratatul Basarabiei
+								</div>
+							</div>
+						</a>
+						<div class="overview-description">Recunoaşterea internaţională a unirii Basarabiei cu România
+ 
+						</div>
+					</div>	
+
+					<div class="overview-entry inline-block ">
+						<a title="Conferința de Pace de la Paris" href="/mittelalter/fruehmittelalter/lucys-wissensbox/die-voelkerwanderung/">
+							<div class="overview-image relative" style="background-image: url(img/League.svg);">
+								<div class="overview-title absolute">Liga Naţiunilor
+								</div>
+							</div>
+						</a>
+						<div class="overview-description">Misiunea principală a Ligii Naţiunilor a fost păstrarea păcii în lume.
+
+ 
+						</div>
+					</div>	
+
+					
+				
+				</div>	
+			</div>				
+			
+			<div id="_1_detail_1" class="inline-block epoch-detail-content-wrapper">
+				<div class="epoch-detail-header">
+					<div class="inline-block title-wrapper">
+						<h1 class="title">
+							 Context istoric
+						</h1>
+					</div>
+				</div>
+				<div class="epoch-detail-content">				
+				
+				  <h3>Consecinţele Primului Război Mondial</h3>
+					<ul>
+					<li>	10 milioane de soldaţi morţi, 4 milioane de văduve şi 8 milioane de copii orfani, 6 milioane invalizi şi 20 milioane de răniţi;</li>
+					<li>	au dispărut patru imperii (austro-ungar, otoman, german şi ţarist). Vor apărea şi noi state-naţionale;</li>
+					<li>	America va deveni liderul economic al lumii;</li>
+					<li>	se schimbă mentalitatea oamenilor (pesimism, nehilism);</li>
+					<li>	în relaţiile internaţionale se dorea respectarea securităţii colective nu echilibrul de putere cum era anterior.</li>
+					</ul>
+				</div>	
+			</div>
+			
+			
+			<div id="_1_eseu" class="inline-block epoch-detail-content-wrapper">
+				<div class="epoch-detail-header">
+					<div class="inline-block title-wrapper">
+						<h1 class="title">
+							 Conferința de pace de la Paris și noua ordine internațională
+						</h1>
+					</div>
+				</div>
+				<div class="epoch-detail-content">	
+				  <h3>Eseu</h3>
+				  <h4><em>Noua ordine internaţională în perioada interbelică</em></h4>
+					<p><b>Repere:</b></p>
+					<ul>
+					<li> Contextul istoric al desfășurării Conferinței de Pace de la Paris</li>
+					<li> Desfășurarea Conferinţei de Pace de la Paris și problemele discutate</li>
+					<li> Semnarea tratatelor internaţionale și conţinutul lor
+					<li> Societatea Națiunilor</li>
+					<li> Rivalități politico-militare</li>
+					</ul>
+					<p>Noua ordine internaţională în perioada interbelică se instanrează după încheierea
+					Primului Război Mondial, care a lăsat în urma sa mult haos în întreaga lume: uriașe
+					pierderi umane și materiale. Dificultăţile economice, criza morală, de conștiință au de-
+					terminat apariţia, înainte de încheierea conflictului, a unui curent pacifist, a numeroase
+					proiecte și programe de organizare a lumii pe baze noi, astfel ca pacea și securitatea,
+					dezvoltarea și bunăstarea să fie asigurate pentru toate naţiunile.</p>
+					<p>Un puternic impact asupra celor două tabere beligerante au avut Decretul asupra
+					păcii lansat de guvernul bolșevic la 8 noiembrie 1917 și programul american de pace
+					cunoscut sub numele de Cele 14 puncte ale președintelui Woodrow Wilson. Ambele
+					proclamau unele principii foarte importante și nobile, între care diplomaţia deschisă,
+					dreptul la autodeterminare, pace democratică, fără anexiuni.</p>
+					<p>La 11 noiembrie 1918 s-a pus capăt războiului, iar la 18 ianuarie 1919 la Paris au
+					început lucrările Conferinţei de Pace, la care au participat numai ţările aliate și asociate,
+					nu și cele învinse (Germania, Austria, Ungaria, Bulgaria și Turcia). La capătul a aproape
+					cinci ani de război, președintele Statelor Unite ale Americii, Woodrow Wilson, era, fără
+					îndoială, îndreptățit să declare lui Raymond Poincaré, președintele Republicii France-
+					ze, că „va fi mai dificil de realizat pacea decât războiul”. Acest lucru a ieșit în evidenţă în
+					timpul celor aproape doi ani de negocieri și dispute între învingători, care au caracteri-
+					zat lucrările Conferinţei de Pace.</p>
+					<p><b>Conferinţa de Pace de la Paris.</b> Conferinţa de Pace a pus în practică principiul na-
+					ţionalităţilor, ceea ce a condus la modificarea hărţii politice a Europei prin trasarea unor
+					noi frontiere și reconstituirea unor state independente (Polonia, Austria, Ungaria), apa-
+					riţia unor state noi (Cehoslovacia, Regatul sârbo-croato-sloven – mai târziu Iugoslavia,
+					ţările baltice) sau prin desăvârșirea unităţii teritoriale a altora (România, Italia).
+					Austria independentă era o ţară mai mult agrară, cu o situaţie economică și finan-
+					ciară precară, ceea ce întreţinea starea de nemulţumire a populaţiei și întărea curentul
+					favorabil unirii ei cu Germania industrială.</p>
+					<p>Ungaria era redusă la teritoriile cu o populaţie majoritar maghiară. Anularea celor
+					trei împărțiri din veacul al XvIII-lea a condus la reconstituirea Poloniei, iar din fos-
+					ta Austro-Ungarie s-a născut Cehoslovacia. În jurul Serbiei s-au unit croaţii, slovenii,
+					bosniacii, formându-se Regatul sârbo-croato-sloven. Cu Regatul Român s-au unit Ba-
+					sarabia, Bucovina și Transilvania. Din fostul Imperiu Rus s-au constituit statele inde-
+					pendente Finlanda, Lituania, Letonia și Estonia.</p>
+					<p>La 25 octombrie 1920, la Paris a fost semnat tratatul între Anglia, Franţa, Japonia
+					și Italia, pe de o parte, și România, pe de altă parte. Era recunoscută suveranitatea Ro-
+					mâniei asupra teritoriului dintre Prut și Nistru. Statul roman se angaja să asigure în
+					acest teritoriu, tuturor locuitorilor, aceleași drepturi și libertăţi ca ale celorlalţi cetăţeni
+					ai României.</p>
+					<p><b>Germania şi Tratatul de la Versailles.</b> Cea mai mare atenţie s-a acordat tratatului
+					cu Germania, socotită a fi principalul vinovat de declanșarea războiului. Cunoscut
+					sub numele de Tratatul de la versailles, acest document cuprindea condiţii grele pen-
+					tru statul german: teritoriale și demografice, economice și militare. Germania ceda
+					teritorii Franţei, Belgiei, Danemarcei, Poloniei, cu 8 milioane de locuitori. Practic,
+					Germania pierde o septime din teritoriu și a zecea parte din populaţie. Germania era
+					obligată să recunoască independenţa Austriei, Cehoslovaciei și Poloniei. Tratatul de
+					pace a slăbit mult puterea Germaniei, transformând-o pentru câțiva ani într-un stat
+					de rangul doi. Însă germanii nu vor recunoaște prevederile Tratatului de la versailles,
+					vor contesta noile frontiere și vor acţiona pe toate căile pentru a reface Germania
+					Mare de dinainte de război (mai detaliat vezi la sinteze).</p>
+					<p><b>Noua ordine internaţională şi estul Europei.</b> Sistemul versailles avea implicaţii
+					semnificative pentru această regiune a continentului. Aproape 20000 de kilometri de
+					noi graniţe erau trasate, vechile unităţi economice erau sparte, noi sisteme monetare
+					trebuie create uneori din nimic. Integrarea economică, juridică a noilor regiuni crea
+					dificultăţi extraordinare statelor est-europene, fie că este vorba despre o extindere a
+					teritoriului, fie că despre crearea unui nou stat.</p>
+					<p><b>Societatea Naţiunilor şi politica securităţii colective.</b> Învățămintele războiului,
+					cortegiul nesfârșit al suferinţelor de tot felul și amploarea curentului pacifist au con-
+					tribuit decisiv la crearea, în cadrul Conferinţei de pace, a Societăţii Naţiunilor, pe baza
+					Pactului întocmit de o comisie specială, condusă de președintele Statelor Unite ale
+					Americii, Woodrow Wilson (mai detaliat vezi la sinteze).</p>
+					<p><b>Punctele slabe ale Societăţii Naţiunilor. </b>Cauzele eșecului Societăţii Naţiunilor au
+					fost îndelung dezbătute, însă orice explicaţie trebuie să plece de la discrepanţa dintre
+					așteptările mult prea mari ale opiniei publice mondiale și capacitățile reale ale Ligii. În
+					același timp, aplicarea prevederilor Pactului și realizarea obiectivelor Societăţii Naţiu-
+					nilor s-au dovedit a fi o misiune dificilă din cauza nemulţumirii învinșilor, a persisten-
+					ţei unor situaţii conflictuale, a rămânerii în afara instituţiei, din motive diferite, a trei
+					mari puteri: Statele Unite ale Americii, Germania și Rusia. Aceasta a făcut ca Societatea
+					Naţiunilor să nu fie un organism universal, cum s-a dorit iniţial. Rusia sovietică nu a
+					fost admisă la Conferinţa de Pace și nu a semnat tratatele care au pus bazele noii ordini
+					internaţionale. Din această cauză, statul sovietic nu a recunoscut aceste tratate și aceas-
+					tă nouă ordine, implicit Societatea Naţiunilor. Pe de altă parte, puterile învingătoare au
+					sprijinit forţele politice și militare antisovietice în războiul civil și au intervenit cu forţe
+					militare împotriva Rusiei, fără să poată reuși lichidarea regimului bolșevic. Au recurs
+					apoi la blocada economică, politică și diplomatică împotriva Rusiei și la sprijinirea con-
+					solidării puterii statelor vecine acesteia.</p>
+					<p>Totodată, în august 1928 este semnat Pactul de la Paris (Pactul Briand-Kellogg),
+					care elimina războiul din raporturile internaţionale, toate diferendele trebuind să fie
+					rezolvate prin negocieri, pe cale pașnică. Societatea Naţiunilor s-a angajat prin Pact
+					să înfăptuiască reducerea armamentelor până la minimumul necesar menţinerii ordi-
+					nii interne și apărării frontierelor. În conformitate cu obiectivele Societăţii Naţiunilor,
+					pentru consolidarea păcii și înfăptuirea securităţii colective au fost create Mica Înţele-
+					gere (Cehoslovacia, Iugoslavia și România) și Înţelegerea Balcanică (Grecia, Iugoslavia,
+					România și Turcia), alianţe regionale defensive.</p>
+					<p><b>Problema germană. </b>Chestiunea germană nu trebuie privită în izolare, ci în legă-
+					tură problema rusă și cu dificultăţile economice ale Europei. Dacă Franţa va oscila în
+					această perioadă între o politică de fermitate și una de reconciliere faţă de Germania,
+					Marea Britanie se va orienta de timpuriu spre o apropiere de aceasta.</p>
+					<p>În ceea ce privește Franţa, politica sa de fermitate faţă de principalul stat înfrânt
+					apărea drept unica politică posibilă în condiţiile eșecului obţinerii unor garanţii de se-
+					curitate anglo-americane, în conformitate cu asigurările date de președintele ameri-
+					can Wilson în 1919. Politica de fermitate însemna utilizarea unor instrumente create
+					de Tratatul de la versailles (ocupaţia, dezarmarea, dar mai ales reparaţiile) pentru a
+					redresa dezechilibrul potenţial dintre o Franţă învingătoare, dar slăbită economic și
+					demografic, și o Germanie infantă, cu un potenţial economic și uman net superior și
+					eliberată în plus de ameninţarea alianţei tradiţionale franco-ruse.</p>
+					<p>Ciocnirea anglo-franceză era practic inevitabilă, de vreme ce britanicii își conce-
+					peau politica germană în termenii reconstrucţiei economice a Republicii de la Weimar,
+					în timp ce partea franceză, în încercarea de a controla evoluţia Germaniei, se folosea la
+					fel de un instrument economic, reparaţiile.</p>
+					<p>Din nefericire, divergenţele anglo-franceze erau departe de a fi limitate la problema
+					germană. Dezmembrarea Imperiului otoman și crearea Turciei sub autoritatea lui Mus-
+					tafa Kemal aveau să dea naștere unor diviziuni adânci între cei doi foști aliaţi. Astfel,
+					conflictul greco-turc a găsit cele două mari puteri în tabere opuse, Kemal, sprijinit de
+					Franţa și Italia, obținând în august 1922 o victorie decisivă împotriva Greciei ce benefi-
+					cia de ajutorul Marii Britanii. În urma Tratatului de la Lausanne (1923), Turcia recupera
+					întreaga Anatolie, precum și teritorii europene. De asemenea, rivalitatea legată de fostele
+					teritorii arabe ale Imperiului Otoman a contribuit enorm la adâncirea divergenţelor. Po-
+					litica progermană a Angliei în această perioadă era văzută de o serie de factori de decizie
+					de la Londra ca o reîntoarcere la tradiţionala politică de sprijinire a echilibrului conti-
+					nental. Astfel, Franţei, devenită principala putere a continentului, trebuia să i se opună o
+					contrapondere și singura capabilă să joace acest rol era fostul inamic.</p>
+					<p><b>Reluarea raporturilor dintre Germania şi Rusia sovietică. </b>În plan diplomatic,
+					Germania va complica ecuaţia acestei prime perioade postbelice după ce, între 1922 și
+					1932, relaţiile dintre Germania și Rusia sovietică (ulterior URSS) au fost direcţionate
+					de Tratatul de la Rapallo din 16 aprilie 1922 și de Tratatul de neutralitate și neagresiune
+					din 24 aprilie 1926. Primul tratat stabilea procedura de reglementare a litigiilor dintre
+					cele două ţări, renunţarea reciprocă la despăgubirile de război, restabilirea relaţiilor
+					diplomatice, clauza naţiunii celei mai favorizate, colaborarea economică.</p>
+					<p>Cel de-al doilea tratat, încheiat pe o durată de cinci ani, prevedea că, în caz de atac
+					asupra uneia dintre părţi, cealaltă se angaja să aibă faţă de ea o atitudine pașnică. În caz
+					de conflict între sovietici și Polonia, sprijinul Franţei pentru aliatul polon era greu de
+					acordat, Germania fiind neutră. În 1931, când acest tratat a expirat, între cele două ţări
+					a fost încheiat un protocol de prelungire, care însă a fost ratificat abia în mai 1933.
+					Relaţiile franco-germane. Pacea și securitatea Europei depindeau, între altele, de
+					situaţia relaţiilor dintre Franţa și Germania. Deși Franţa a fost învingătoare în război,
+					economia sa își revenea greu, datoria externă era mare, francul se devalorizase. Salvarea
+					era văzută în încasarea datoriei de război din partea Germaniei. Aceasta trecea prin
+					dificultăţi mult mai mari, ruina economică și falimentul mărcii făcând imposibilă
+					plata reparaţiilor.</p>
+					<p><b>Problema germană şi ocuparea Ruhr-ului (1920-1923). </b>Din cauza greutăţilor
+					economice, pe 12 iulie 1922 Guvernul german a înaintat aliaţilor un moratoriu de
+					șase luni la plata reparaţiilor, aducând drept argument starea precară a finanţelor
+					germane. În contextul degradării relaţiilor anglo-franceze, în decembrie 1922 Co-
+					misia Reparaţiilor constată eșecul Germaniei în a-și respecta obligaţiile în domeniul
+					reparaţiilor. Pe 2 ianuarie este decisă, în ciuda opoziţiei britanice, preluarea Ruhr-
+					ului cu titlu de garanţie, iar pe 11 ianuarie 1923 trupe franco-belgiene pătrund în
+					zona Ruhr-ului. Franţa urmărește în acest fel să se asigure că Germania își va respecta
+					obligaţiile fixate la versailles, dar și să determine partea germană să adopte o politică
+					favorabilă intereselor franceze. Reacţia germană imediată se materializează în lansa-
+					rea unei campanii de rezistenţă pasivă a muncitorilor și funcţionarilor din Ruhr, care
+					riscă să paralizeze regiunea și să îi împiedice pe francezi să obţină orice beneficii de
+					pe urma acestei ocupaţii.</p>
+					<p>Ocuparea Ruhr-ului s-a dovedit a fi pentru Franţa un eșec strategic: a tergiver-
+					sat negocierile în speranţa obţinerii unor avantaje mai mari de pe urma haosului
+					ce părea să se instaleze în Germania și nu a reușit să transforme succesul din Ruhr
+					în avantaje diplomatice. În schimb, a reușit să se izoleze diplomatic și financiar, să
+					transforme imaginea Germaniei din agresor în victimă, iar Anglia și SUA au preluat
+					în administrare problema reparaţiilor germane.</p>
+					<p>Noua configuraţie a frontierelor europene, fondată pe principiul naţionalităţilor,
+					era departe de a fi perfectă. Noua ordine nu a reușit să rezolve toate pretenţiile teri-
+					toriale ale învingătorilor, iar după încheierea tratatelor au rămas multe nelămuriri:
+					anumite regiuni vor fi obligate să decidă prin referendum cărei ţări vor să îi aparţină,
+					în timp ce unele orașe sunt declarate libere.</p>
+				</div>	
+			</div>			
+
+
+			<div id="_1_teste" class="inline-block epoch-detail-content-wrapper">
+				<div class="epoch-detail-header">
+					<div class="inline-block title-wrapper">
+						<h1 class="title">
+							 Conferința de pace de la Paris și noua ordine internațională
+						</h1>
+					</div>
+				</div>
+				<div class="epoch-detail-content">	
+
+
+
+					<div id="question-wrapper" data-questions="[
+					   {&quot;text&quot;:&quot;Cand a avut loc Conferinta de Pace din Paris?&quot;,
+						&quot;answers&quot;:[{&quot;text&quot;:&quot;1919&quot;,
+											  &quot;correct&quot;:true,
+											  &quot;explanation&quot;:&quot;Conferinta de Pace a avut loc in anul 1919. &quot;
+											 },
+											 {&quot;text&quot;:&quot;1912&quot;,&quot;correct&quot;:false,&quot;explanation&quot;:&quot;Conferinta de Pace a avut loc in anul 1919.&quot;},
+											 {&quot;text&quot;:&quot;1914&quot;,&quot;correct&quot;:false,&quot;explanation&quot;:&quot;Conferinta de Pace a avut loc in anul 1919.&quot;}],
+						&quot;image&quot;:&quot;img\/_1Conf.jpg&quot;
+					   },
+					 
+					   {&quot;text&quot;:&quot;Cand a avut loc Conferinta din Washington&quot;,
+						&quot;answers&quot;:[{&quot;text&quot;:&quot;1922&quot;,
+											  &quot;correct&quot;:true,
+											  &quot;explanation&quot;:&quot;Conferinta din Washington a avut loc in anul 1919. &quot;
+											 },
+											 {&quot;text&quot;:&quot;1912&quot;,&quot;correct&quot;:false,&quot;explanation&quot;:&quot;Conferinta din Washington a avut loc in anul 1919.&quot;},
+											 {&quot;text&quot;:&quot;1914&quot;,&quot;correct&quot;:false,&quot;explanation&quot;:&quot;Conferinta din Washington a avut loc in anul 1919.&quot;}],
+						&quot;image&quot;:&quot;img\/_1Conf.jpg&quot;
+					   }]">
+					   <div id="question-text-wrapper" class="" style="transform: matrix(1, 0, 0, 1, 0, 0);">
+						  <div id="question-mark" style="visibility: inherit; opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);">?</div>
+						  <span id="question-text" style="visibility: inherit; opacity: 1;">Cand a avut loc Conferinta de Pace din Paris?</span>
+					   </div>
+					   <div id="question-image-wrapper" style="visibility: inherit; opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);">
+						  <img id="question-image" src="img/_1Conf.jpg">
+					   </div>
+					   <div id="question-right-wrapper">
+						  <ul id="answers-wrapper">
+							 <li class="answer-wrapper pointer" style="visibility: inherit; opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);">
+								<div class="answer-letter">A</div>
+								<span class="answer-text">1919</span>
+							 </li>
+							 <li class="answer-wrapper pointer" style="visibility: inherit; opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);">
+								<div class="answer-letter">B</div>
+								<span class="answer-text">1912</span>
+							 </li>
+							 <li class="answer-wrapper pointer" style="visibility: inherit; opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);">
+								<div class="answer-letter">C</div>
+								<span class="answer-text">1914</span>
+							 </li>
+						  </ul>
+						  <div id="question-eval-wrapper" style="display: none;">
+							 <div id="generic-eval-text" style="transform-origin: 0px 50% 0px; visibility: hidden; opacity: 0; transform: matrix(2, 0, 0, 2, 0, 0);">
+							 </div>
+							 <div id="answer-explanation" style="transform-origin: 0px 50% 0px; visibility: hidden; opacity: 0; transform: matrix(2, 0, 0, 2, 0, 0);">
+							 </div>
+							 <div id="question-next-button" class="btn" style="transform-origin: 0px 50% 0px; visibility: hidden; opacity: 0; transform: matrix(2, 0, 0, 2, 0, 0);"><span>Nächste Frage</span>
+							 </div>
+						  </div>
+					   </div>
+					   <div id="quiz-finish-wrapper" style="display: none;">
+						  <div id="quiz-finish-image-wrapper" class="table-cell" style="transform-origin: 0px 50% 0px; visibility: hidden; opacity: 0; transform: matrix(2, 0, 0, 2, 0, 0);">
+							 <img src="img/quiz_finish.png" alt="Kinderzeitmaschine Quiz">
+						  </div>
+						  <div id="quiz-finish-feedback-wrapper" class="table-cell">
+							 <span id="quiz-feedback-title" style="transform-origin: 0px 50% 0px; visibility: hidden; opacity: 0; transform: matrix(2, 0, 0, 2, 0, 0);"></span>
+							 <div id="quiz-feedback-text" style="transform-origin: 0px 50% 0px; visibility: hidden; opacity: 0; transform: matrix(2, 0, 0, 2, 0, 0);">Du hast <span id="correct-questions">0</span> von <span id="total-questions">0</span> Fragen richtig beantwortet.</div>
+							 <div id="quiz-restart-button" class="btn quiz-restart" style="transform-origin: 0px 50% 0px; visibility: hidden; opacity: 0; transform: matrix(2, 0, 0, 2, 0, 0);"><span>Neues Spiel starten</span></div>
+						  </div>
+					   </div>
+					</div>
+				
+
+
+
+
+
+				</div>
+			</div>	
+
+
+<!-- ////////////////___________2__________________________________   -->
+		  
+		  
+			<div id="_2_rezumat" class="inline-block epoch-detail-content-wrapper">
+				<div class="epoch-detail-header">
+					<div class="inline-block title-wrapper">
+						<h1 class="title">
+							 Mișcarea națională a românilor
+						</h1>
+					</div>
+				</div>
+				<div class="epoch-detail-content">
+				  <h3>Rezumat (2 propoziții)</h3>
+				  <p>Mișcarea națională a românilor...</p>
+
+
+				</div>
+			</div>
+
+			
+		  </article>
+	  </div>
+  </div>
+
+
+
+
+  <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
+  <script src="./slick/slick.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript">
+    $(document).on('ready', function() {
+      $(".center").slick({
+        dots: true,
+        infinite: true,
+        centerMode: false,
+        slidesToShow: 6,
+        slidesToScroll: 6
+      });
+    });
+	
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("activeACC");
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    } 
+  });
+};	
+	
+  function MyFunction(evt, numePagina) {
+	var btns = document.getElementsByClassName("detail-link-wrapper");
+		var tabcontent = document.getElementsByClassName("inline-block epoch-detail-content-wrapper");
+		for (var i = 0; i < btns.length; i++) {
+		  btns[i].addEventListener("click", function() {
+		  var current = document.getElementsByClassName("active");
+		  if (current.length > 0) { 
+			current[0].className = current[0].className.replace(" active", "");
+		  }
+		  this.className += " active";
+		  
+		  var currentT = document.getElementsByClassName("activeTEM");
+		  var nrTema = "";
+		  if (currentT.length > 0) { 
+			nrTema = currentT[0].getAttribute("data-nr-tema");
+		  }
+			console.log(nrTema);
+		  
+		  for (i = 0; i < tabcontent.length; i++) {
+			tabcontent[i].style.display = "none";
+		  }
+		  numePagina = nrTema + numePagina;
+		   document.getElementById(numePagina).style.display = "block";
+		  });
+		}
+	};
+	
+  function MyFunctionActivareTema(ob) {
+		  const nodeList = document.querySelectorAll(".slider img");
+			for (let i = 0; i < nodeList.length; i++) {
+			  nodeList[i].className = nodeList[i].className.replace(" activeTEM", "");
+			}
+		  ob.className += " activeTEM";
+		  
+		  var currentT = document.getElementsByClassName("activeTEM");
+		  var nrTema = "";
+		  nrTema = ob.getAttribute("data-nr-tema");
+		  
+
+		  var btns = document.querySelectorAll(".detail-link-wrapper.active a");
+		  var numePagina = "";
+		  var tabcontent = document.getElementsByClassName("inline-block epoch-detail-content-wrapper");
+		  if (btns.length > 0) { 
+			numePagina = btns[0].getAttribute("data-materia-type");
+			  for (i = 0; i < tabcontent.length; i++) {
+				tabcontent[i].style.display = "none";
+			  }
+			  numePagina = nrTema + numePagina;
+			   document.getElementById(numePagina).style.display = "block";			
+			
+		  }		  
+			console.log(nrTema);
+	};	
+	
+  function MyFunctionLink(evt, numePagina) {
+		var tabcontent = document.getElementsByClassName("inline-block epoch-detail-content-wrapper");
+		  for (i = 0; i < tabcontent.length; i++) {
+			tabcontent[i].style.display = "none";
+		  }
+		  var currentT = document.getElementsByClassName("activeTEM");
+		  var nrTema = "";
+		  if (currentT.length > 0) { 
+			nrTema = currentT[0].getAttribute("data-nr-tema");
+		  }		  
+		  numePagina = nrTema + numePagina;		  
+		   document.getElementById(numePagina).style.display = "block";
+	};
+	
+  // DOM element where the Timeline will be attached
+  var container = document.getElementById('visualization');
+
+  // Create a DataSet (allows two way data-binding)
+  var items = new vis.DataSet([
+    {id: 1, content: '<table><tbody><tr><td>8 ian 1918</td></tr><tr><td>Declarare 14 puncte</td></tr><tr><td><img src="https://www.historyplace.com/worldhistory/firstworldwar/us-wilson-desk.jpg" alt="nl" width="100" height="70"></td></tr></tbody></table>', start: '1918-01-08'},
+	
+//    {id: 2, content: '18 ian 1919 - Conferinta de Pace de la Paris', start: '1919-01-18'},
+    {id: 2, content: '<table><tbody><tr><td>18 ian 1919</td></tr><tr><td>Conferinta de Pace de la Paris</td></tr><tr><td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/William_Orpen_%E2%80%93_The_Signing_of_Peace_in_the_Hall_of_Mirrors%2C_Versailles_1919%2C_Ausschnitt.jpg/660px-William_Orpen_%E2%80%93_The_Signing_of_Peace_in_the_Hall_of_Mirrors%2C_Versailles_1919%2C_Ausschnitt.jpg" alt="nl" width="200" height="70"></td></tr></tbody></table>', start: '1919-01-18'},
+	{id: 3, content: '<table><tbody><tr><td>25 ian 1919 - Crearea Ligii Natiunilor</td></tr><tr><td></td></tr></tbody></table>', start: '1919-01-25'},
+    
+//	{id: 3, content: '<table><tbody><tr><td>25 ian 1919</td><td rowspan="2"><img src="flag.jpg" alt="nl" width="100" height="70"></td></tr><tr><td>Crearea Ligii Natiunilorimg</td></tr></tbody></table>', start: '1919-01-25'},
+//    {id: 4, content: '25 ian 1919 - Crearea Ligii Natiunilor', start: '1919-01-25', className: 'red'},
+//    {id: 4, content: '1921 - Conferinta de la Washington', start: '1921-01-01'}
+    {id: 4, content: '<table><tbody><tr><td>1921</td></tr><tr><td>Conferinta de la Washington</td></tr><tr><td><img src="http://ssoltanhistory.weebly.com/uploads/8/8/1/0/8810349/9941884_orig.jpg" alt="nl" width="130" height="70"></td></tr></tbody></table>', start: '1921-01-01'},
+	
+//    {id: 6, content: 'item 6', start: '2014-04-27', type: 'point'}
+  ]);
+
+  // Configuration for the Timeline
+ 	var options = {
+	  width: '100%',
+	  height: '100%',
+	  horizontalScroll: true,
+	  zoomable: false,
+	  maxHeight: '300px',
+	  margin: {
+		item: 20
+	  }
+	}; 
+
+  // Create a Timeline
+  var timeline = new vis.Timeline(container, items, options);
+  
+  timeline.on('select', function (properties) {
+	properties.style = "color: red; background-color: pink;";
+//  alert('selected items: ' + properties.items);
+});	
+</script>
+</body>
+</html>
